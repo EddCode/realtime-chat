@@ -13,7 +13,6 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func ServerWs(w http.ResponseWriter, r *http.Request) {
-
 	fmt.Println(r.Host)
 	ws, err := settings.Upgrader.Upgrade(w, r, nil)
 
