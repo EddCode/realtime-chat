@@ -1,0 +1,22 @@
+version '3.7'
+
+services:
+  server:
+    container_name: wserver
+    build:
+      context: ./backend
+      target: dev
+    port:
+      - 3000:3000
+    volumes:
+      - ./backend:/usr/app
+  client:
+    container_name: client
+    build:
+      context: ./frontend
+      target: dev
+    port:
+      - 8080:8080
+    volumes:
+      - ./frontend:/usr/app
+      - /usr/app/node_modules
