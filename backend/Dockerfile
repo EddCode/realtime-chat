@@ -1,14 +1,19 @@
-FROM golang
+FROM golang:1.12-alpine
 
-RUN mkdir -p /usr/app
+RUN apk update && apk add --no-cache git
+
 WORKDIR /usr/app
 
-COPY . /usr/app
+COPY go.mod go.sum ./
 
-RUN go get github.com/codegangsta/gin
-RUN go-wrapper download
-RUN go-wrapper install
+RUN go mod download
 
-EXPOSE 3000
+COPY . .
 
-CMD ["gin", "run"]
+EXPOSE 5000
+
+# Install CompileDaemon which is used for hot reload each time a file is changed
+RUN go get github.com/githubnemo/CompileDaemon
+
+# ENTRYPOINT ["CompileDaemon", "-log-prefix=false", "-build='go build .'", "-command='./realtime-chat'"]
+ENTRYPOINT ["go", "run", "main.go"]
