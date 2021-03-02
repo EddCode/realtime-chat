@@ -2,23 +2,33 @@ package middelware
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	ws "github.com/EddCode/realtime-chat/websocket"
 )
 
-func Home(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Simple Server sample")
+func serveWs(pool *ws.Pool, w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Websocker hit")
+	conn, err := ws.Upgrade(w, r)
+
+	if err != nil {
+		fmt.Fprintf(w, "%+v\n", err)
+	}
+
+	client := &ws.Client{
+		Conn: conn,
+		Pool: pool,
+	}
+
+	pool.Register <- client
+	client.Read()
+
 }
 
 func ServerWs(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Host)
-	socket, err := ws.Upgrader.Upgrade(w, r, nil)
+	pool := ws.NewPool()
 
-	if err != nil {
-		log.Println(err)
-	}
-
-	ws.Reader(socket)
+	go pool.Start()
+	serveWs(pool, w, r)
 }

@@ -14,6 +14,16 @@ var Upgrader = websocket.Upgrader{
 	CheckOrigin:     func(r *http.Request) bool { return true },
 }
 
+func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
+	conn, err := Upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return conn, nil
+}
+
 func Reader(conn *websocket.Conn) {
 	for {
 		messageType, message, err := conn.ReadMessage()

@@ -8,7 +8,6 @@ import (
 )
 
 func setUpRoutes() {
-	http.HandleFunc("/", middelware.Home)
 	http.HandleFunc("/ws", middelware.ServerWs)
 }
 
