@@ -5,20 +5,20 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/EddCode/realtime-chat/settings"
+	ws "github.com/EddCode/realtime-chat/websocket"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Simple Server")
+	fmt.Fprintf(w, "Simple Server sample")
 }
 
 func ServerWs(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Host)
-	ws, err := settings.Upgrader.Upgrade(w, r, nil)
+	socket, err := ws.Upgrader.Upgrade(w, r, nil)
 
 	if err != nil {
 		log.Println(err)
 	}
 
-	settings.Reader(ws)
+	ws.Reader(socket)
 }
