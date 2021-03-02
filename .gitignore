@@ -1,10 +1,10 @@
 # dependencies
-frontend/node_modules
-frontend/.pnp
-frontend/.pnp.js
+client/node_modules
+client/.pnp
+client/.pnp.js
 
 # testing
-frontend/coverage
+client/coverage
 
 # production
 frontend/build
