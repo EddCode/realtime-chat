@@ -1,28 +1,14 @@
-import {useEffect, useState} from 'react'
-import {ws, sendMessage} from './api'
-import './App.css';
-import ChatHistory from './Components';
+import "./App.css";
+import {BrowserRouter as Router, Switch} from  "react-router-dom";
+import {Routes} from './constants/routes'
 
 function App() {
-  const [chatHistory, setChatHistory] = useState([])
-
-  useEffect(_ => ws(saveHistory), [])
-
-  const saveHistory = msg => {
-    setChatHistory(prev => {
-      prev.push(msg)
-      return prev
-    })
-  }
-
-  const send = _ => sendMessage("hello")
-
-
   return (
-    <div className="App">
-      <ChatHistory chatHistory={chatHistory} />
-      <button onClick={send}>send super message</button>
-    </div>
+      <Router>
+        <Switch>
+          <Routes />
+        </Switch>
+      </Router>
   )
 }
 
