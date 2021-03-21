@@ -8,7 +8,6 @@ import (
 )
 
 func serveWs(pool *ws.Pool, w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Websocker hit")
 	conn, err := ws.Upgrade(w, r)
 
 	if err != nil {
@@ -26,9 +25,8 @@ func serveWs(pool *ws.Pool, w http.ResponseWriter, r *http.Request) {
 }
 
 func ServerWs(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.Host)
 	pool := ws.NewPool()
-
 	go pool.Start()
+
 	serveWs(pool, w, r)
 }

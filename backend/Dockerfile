@@ -15,5 +15,6 @@ EXPOSE 5000
 # Install CompileDaemon which is used for hot reload each time a file is changed
 RUN go get github.com/githubnemo/CompileDaemon
 
-# ENTRYPOINT ["CompileDaemon", "-log-prefix=false", "-build='go build .'", "-command='./realtime-chat'"]
-ENTRYPOINT ["go", "run", "main.go"]
+#ENTRYPOINT ["CompileDaemon", "-log-prefix=false", "-command='./realtime-chat'"]
+#ENTRYPOINT ["go", "run", "main.go"]
+CMD CompileDaemon -command='./realtime-chat'
