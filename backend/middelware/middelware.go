@@ -19,9 +19,9 @@ func serveWs(pool *ws.Pool, w http.ResponseWriter, r *http.Request) {
 		Pool: pool,
 	}
 
+    fmt.Printf("New user register %+v \n", client)
 	pool.Register <- client
 	client.Read()
-
 }
 
 func ServerWs(w http.ResponseWriter, r *http.Request) {

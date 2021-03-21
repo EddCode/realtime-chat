@@ -12,7 +12,7 @@ func setUpRoutes() {
 }
 
 func main() {
-	fmt.Println("Chat App v0.01")
+	fmt.Println("Chat App v0.0.1")
 	setUpRoutes()
 	http.ListenAndServe(":5000", nil)
 }
