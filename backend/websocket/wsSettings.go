@@ -15,7 +15,6 @@ var Upgrader = websocket.Upgrader{
 }
 
 func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
-    Upgrader.CheckOrigin = func(r *http.Request)( bool){ return true }
 	conn, err := Upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		fmt.Println(err)

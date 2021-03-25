@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+    "os"
 
 	"github.com/EddCode/realtime-chat/middelware"
+	"github.com/joho/godotenv"
 )
 
 func setUpRoutes() {
@@ -12,7 +15,17 @@ func setUpRoutes() {
 }
 
 func main() {
+
+    if err := godotenv.Load(); err != nil {
+        log.Fatal("Error loading .env file")
+    }
+
+    port := os.Getenv("PORT")
+
 	fmt.Println("Chat App v0.0.1")
 	setUpRoutes()
-	http.ListenAndServe(":5000", nil)
+
+    if err := http.ListenAndServe(":"+port, nil); err != nil {
+        log.Fatal(err)
+    }
 }

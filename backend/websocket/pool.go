@@ -22,12 +22,10 @@ func (pool *Pool) Start() {
 	for {
 		select {
 		case client := <-pool.Register:
-            fmt.Printf("Clients ===>  %+v\n", client)
 			pool.Clients[client] = true
-            fmt.Printf("Pool ===> %+v\n", pool)
 
 			for client, _ := range pool.Clients {
-				client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined..."})
+				client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined...", User: client.Username})
 			}
 			break
 		case client := <-pool.Unregister:

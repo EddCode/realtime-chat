@@ -8,33 +8,38 @@ import (
 )
 
 type Client struct {
-	ID   string
-	Conn *websocket.Conn
-	Pool *Pool
+    Username string `json:username`
+	Conn     *websocket.Conn
+	Pool     *Pool
 }
 
 type Message struct {
 	Type int    `json:type`
 	Body string `json:body`
+    User string `json:user`
 }
 
 func (client *Client) Read() {
 	defer func() {
 		client.Pool.Unregister <- client
+
+        if r := recover(); r != nil {
+            log.Println("Some error to recive message", r)
+        }
+
 		client.Conn.Close()
 	}()
 
 	for {
 		messageType, p, err := client.Conn.ReadMessage()
 
-		if err == nil {
-			log.Println(err)
+		if err != nil {
+            panic(err)
 		}
 
-		message := Message{Type: messageType, Body: string(p)}
+		message := Message{Type: messageType, Body: string(p), User: client.Username}
 
 		client.Pool.Broadcast <- message
-		fmt.Printf("Message Recived: %+v\n", message.Body)
 	}
 
 }
