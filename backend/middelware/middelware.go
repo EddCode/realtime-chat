@@ -33,8 +33,6 @@ func serveWs(pool *ws.Pool, w http.ResponseWriter, r *http.Request) {
    //     panic(err)
    // }
 
-    fmt.Printf("New user register %+v \n", client)
-
 	pool.Register <- client
 	client.Read()
 }

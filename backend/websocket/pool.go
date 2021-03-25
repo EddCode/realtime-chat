@@ -5,7 +5,7 @@ import "fmt"
 type Pool struct {
 	Register   chan *Client
 	Unregister chan *Client
-	Clients    map[*Client]bool
+	Clients    map[*Client]string
 	Broadcast  chan Message
 }
 
@@ -13,7 +13,7 @@ func NewPool() *Pool {
 	return &Pool{
 		Register:   make(chan *Client),
 		Unregister: make(chan *Client),
-		Clients:    make(map[*Client]bool),
+		Clients:    make(map[*Client]string),
 		Broadcast:  make(chan Message),
 	}
 }
@@ -22,7 +22,10 @@ func (pool *Pool) Start() {
 	for {
 		select {
 		case client := <-pool.Register:
-			pool.Clients[client] = true
+			pool.Clients[client] = client.Username
+            fmt.Println(len(pool.Clients))
+            fmt.Printf("New user register %+v \n", client)
+            fmt.Printf("New client register in pool %+v \n", pool)
 
 			for client, _ := range pool.Clients {
 				client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined...", User: client.Username})
