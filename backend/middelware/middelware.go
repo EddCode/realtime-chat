@@ -2,21 +2,17 @@ package middelware
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
+	"github.com/EddCode/realtime-chat/utils"
 	ws "github.com/EddCode/realtime-chat/websocket"
 )
 
-func JsonErrorReader()  {
-    if recov := recover(); recov != nil {
-        log.Print("Some error recoverd", recov)
-    }
-}
 
 func serveWs(pool *ws.Pool, w http.ResponseWriter, r *http.Request) {
 	conn, err := ws.Upgrade(w, r)
-    defer JsonErrorReader()
+
+    defer utils.JsonErrorReader()
     defer conn.Close()
 
 	if err != nil {
@@ -24,14 +20,13 @@ func serveWs(pool *ws.Pool, w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &ws.Client{
-        Username: "Edgar Fig",
+        Id: utils.GenerateUuid(),
 		Conn: conn,
 		Pool: pool,
 	}
 
-   // if err := conn.ReadJSON(client); err != nil {
-   //     panic(err)
-   // }
+    if err := conn.ReadJSON(client); err != nil {
+    }
 
 	pool.Register <- client
 	client.Read()

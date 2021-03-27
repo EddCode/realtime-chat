@@ -1,11 +1,9 @@
-import {useEffect, useState} from 'react'
-import {ws, sendMessage} from '../api'
+import { useState} from 'react'
+import { sendMessage } from '../api'
 import ChatHistory from '../Components';
 
 const Chat = ({ history }) => {
   const [chatHistory, setChatHistory] = useState([])
-
-  useEffect(_ => ws(saveHistory), [])
 
   const saveHistory = msg => {
     setChatHistory(prev => {
@@ -14,7 +12,11 @@ const Chat = ({ history }) => {
     })
   }
 
-  const send = _ => sendMessage("hello")
+  const send = _ => {
+    const msg = "hello"
+    saveHistory(msg)
+    sendMessage(msg)
+  }
 
   const goToHome = () => history.push('/')
 

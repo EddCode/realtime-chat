@@ -1,5 +1,13 @@
+import {useEffect} from "react";
+import { sendMessage  } from '../api'
+
 const Home = ({ history }) => {
   const goToChat = () => history.push("/chat");
+
+  useEffect(() => {
+    const username = {username: 'Edgar figueroa'}
+    sendMessage(JSON.stringify(username))
+  }, [])
 
   return (
     <>

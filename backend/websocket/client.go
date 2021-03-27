@@ -7,6 +7,7 @@ import (
 )
 
 type Client struct {
+    Id string
     Username string `json:username`
 	Conn     *websocket.Conn
 	Pool     *Pool

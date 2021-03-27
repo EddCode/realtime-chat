@@ -1,11 +1,13 @@
 package websocket
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Pool struct {
 	Register   chan *Client
 	Unregister chan *Client
-	Clients    map[*Client]string
+    Clients    map[string]*Client
 	Broadcast  chan Message
 }
 
@@ -13,7 +15,7 @@ func NewPool() *Pool {
 	return &Pool{
 		Register:   make(chan *Client),
 		Unregister: make(chan *Client),
-		Clients:    make(map[*Client]string),
+        Clients:    make(map[string]*Client),
 		Broadcast:  make(chan Message),
 	}
 }
@@ -21,25 +23,24 @@ func NewPool() *Pool {
 func (pool *Pool) Start() {
 	for {
 		select {
-		case client := <-pool.Register:
-			pool.Clients[client] = client.Username
+		case clientRegister := <-pool.Register:
+            pool.Clients[clientRegister.Id] = clientRegister
             fmt.Println(len(pool.Clients))
-            fmt.Printf("New user register %+v \n", client)
-            fmt.Printf("New client register in pool %+v \n", pool)
+            fmt.Println(pool.Clients)
 
-			for client, _ := range pool.Clients {
+			for _, client := range pool.Clients {
 				client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined...", User: client.Username})
 			}
 			break
 		case client := <-pool.Unregister:
-			delete(pool.Clients, client)
+			delete(pool.Clients, client.Id)
 
-			for client, _ := range pool.Clients {
+			for _, client := range pool.Clients {
 				client.Conn.WriteJSON(Message{Type: 1, Body: "User Disconected..."})
 			}
             break
 		case message := <-pool.Broadcast:
-			for client, _ := range pool.Clients {
+			for _, client := range pool.Clients {
 				if err := client.Conn.WriteJSON(message); err != nil {
 					fmt.Println(err)
 					return

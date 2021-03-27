@@ -2,7 +2,7 @@ const socket = new WebSocket("ws://localhost:5000/ws")
 
 export const ws = cb => {
 
-  socket.onmessage = msg => cb(msg)
+  socket.onmessage = msg => msg
 
   socket.onclose = event => console.log("Socket closed:", event)
 
