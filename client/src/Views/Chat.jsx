@@ -1,9 +1,13 @@
-import { useState} from 'react'
+import { useContext, useState} from 'react'
 import { sendMessage } from '../api'
 import ChatHistory from '../Components';
 
+import {UserContext} from '../Context/user';
+
 const Chat = ({ history }) => {
   const [chatHistory, setChatHistory] = useState([])
+
+  const user = useContext(UserContext)
 
   const saveHistory = msg => {
     setChatHistory(prev => {
@@ -22,7 +26,7 @@ const Chat = ({ history }) => {
 
   return (
     <div className="App">
-      <p onClick={goToHome}>Alo world</p>
+      <p onClick={goToHome}>Alo { user.username }</p>
       <ChatHistory chatHistory={chatHistory} />
       <button onClick={send}>send super message</button>
     </div>

@@ -1,6 +1,6 @@
-const socket = new WebSocket("ws://localhost:5000/ws")
+const  socket = new WebSocket('ws://localhost:5000/ws')
 
-export const ws = cb => {
+export const ws = _ => {
 
   socket.onmessage = msg => msg
 
