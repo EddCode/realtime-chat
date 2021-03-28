@@ -1,7 +1,6 @@
 package websocket
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/gorilla/websocket"
@@ -31,11 +30,8 @@ func (client *Client) Read() {
 		client.Conn.Close()
 	}()
 
-    fmt.Printf("Before enter to infinit loop \n")
 	for {
-        fmt.Printf("Before enter to infinit loop \n")
 		messageType, p, err := client.Conn.ReadMessage()
-        fmt.Printf("MessageType %d \n", messageType)
 
 		if err != nil {
             panic(err)
@@ -43,7 +39,6 @@ func (client *Client) Read() {
 
 		message := Message{Type: messageType, Body: string(p), User: client.Username}
 
-        fmt.Printf("Client send message %v \n", client)
 		client.Pool.Broadcast <- message
 	}
 

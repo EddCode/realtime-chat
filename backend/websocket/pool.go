@@ -25,8 +25,7 @@ func (pool *Pool) Start() {
 		select {
 		case clientRegister := <-pool.Register:
             pool.Clients[clientRegister.Id] = clientRegister
-            fmt.Println(len(pool.Clients))
-            fmt.Println(pool.Clients)
+            fmt.Println("pool connection client ====>", &pool.Clients)
 
 			for _, client := range pool.Clients {
 				client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined...", User: client.Username})
@@ -40,7 +39,6 @@ func (pool *Pool) Start() {
 			}
             break
 		case message := <-pool.Broadcast:
-            fmt.Printf("Clients in pool connection %v", pool.Clients)
 			for _, client := range pool.Clients {
 				if err := client.Conn.WriteJSON(message); err != nil {
 					fmt.Println(err)

@@ -34,11 +34,9 @@ const Chat = ({ history }) => {
     setMessage('')
   }
 
-  const goToHome = () => history.push('/')
-
   return (
     <div className="App">
-      <p onClick={goToHome}>Alo { user.username }</p>
+      <p>Alo { user.username }</p>
       <ChatHistory chatHistory={chatHistory} />
       <div>
         <input type="text" value={message} onChange={handleChangeMsg} onKeyUp={handleKeyUp}/>

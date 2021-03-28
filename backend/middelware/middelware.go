@@ -8,8 +8,7 @@ import (
 	ws "github.com/EddCode/realtime-chat/websocket"
 )
 
-
-func serveWs(pool *ws.Pool, w http.ResponseWriter, r *http.Request) {
+func ServeWs(pool *ws.Pool, w http.ResponseWriter, r *http.Request) {
 	conn, err := ws.Upgrade(w, r)
 
     defer utils.JsonErrorReader()
@@ -26,15 +25,9 @@ func serveWs(pool *ws.Pool, w http.ResponseWriter, r *http.Request) {
 	}
 
     if err := conn.ReadJSON(client); err != nil {
+        panic(err)
     }
 
 	pool.Register <- client
 	client.Read()
-}
-
-func ServerWs(w http.ResponseWriter, r *http.Request) {
-	pool := ws.NewPool()
-	go pool.Start()
-
-	serveWs(pool, w, r)
 }

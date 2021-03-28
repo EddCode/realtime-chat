@@ -4,14 +4,20 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-    "os"
+	"os"
 
 	"github.com/EddCode/realtime-chat/middelware"
+	ws "github.com/EddCode/realtime-chat/websocket"
 	"github.com/joho/godotenv"
 )
 
 func setUpRoutes() {
-	http.HandleFunc("/ws", middelware.ServerWs)
+	pool := ws.NewPool()
+	go pool.Start()
+
+	http.HandleFunc("/ws", func(rw http.ResponseWriter, r *http.Request) {
+        middelware.ServeWs(pool, rw, r)
+    })
 }
 
 func main() {
