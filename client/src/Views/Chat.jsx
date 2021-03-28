@@ -1,13 +1,25 @@
 import { useContext, useState} from 'react'
 import { sendMessage } from '../api'
+import { makeAcctionOnEnter } from '../helpers'
+
+// Components
 import ChatHistory from '../Components';
 
-import {UserContext} from '../Context/user';
+// Context
+import { UserContext } from '../Context/user';
 
 const Chat = ({ history }) => {
   const [chatHistory, setChatHistory] = useState([])
+  const [message, setMessage] = useState('')
 
   const user = useContext(UserContext)
+
+  // ==================================
+  const handleChangeMsg = (evt) => setMessage(evt.target.value)
+
+  const handleKeyUp = (evt) => makeAcctionOnEnter(evt, send)
+
+  // ==================================
 
   const saveHistory = msg => {
     setChatHistory(prev => {
@@ -17,9 +29,9 @@ const Chat = ({ history }) => {
   }
 
   const send = _ => {
-    const msg = "hello"
-    saveHistory(msg)
-    sendMessage(msg)
+    saveHistory(message)
+    sendMessage(message)
+    setMessage('')
   }
 
   const goToHome = () => history.push('/')
@@ -28,7 +40,10 @@ const Chat = ({ history }) => {
     <div className="App">
       <p onClick={goToHome}>Alo { user.username }</p>
       <ChatHistory chatHistory={chatHistory} />
-      <button onClick={send}>send super message</button>
+      <div>
+        <input type="text" value={message} onChange={handleChangeMsg} onKeyUp={handleKeyUp}/>
+        <button onClick={send}>send super message</button>
+      </div>
     </div>
   )
 }

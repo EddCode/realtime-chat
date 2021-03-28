@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { ws, sendMessage  } from '../api'
+import { makeAcctionOnEnter } from '../helpers'
 
 // Styles
 import style from './Home.module.css'
@@ -21,9 +22,7 @@ const Home = ({ history }) => {
     setUsername(evt.target.value)
   }
 
-  const handleKeyUp = (evt) => {
-    if (evt.keyCode === 13) return startChat()
-  }
+  const handleKeyUp = (evt) => makeAcctionOnEnter(evt, startChat)
 
   const startChat = _ => {
     userContext.setUsername = username
