@@ -30,6 +30,7 @@ const Home = ({ history }) => {
     goToChat()
   }
 
+
   return (
     <section className={style.container}>
       <h1> Enter your username</h1>
